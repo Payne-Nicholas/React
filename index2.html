@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //可复用的写法
+    class LikeButton {
+        render() {
+            return `
+                <button id='like-btn'>
+                <span class='like-text'>赞</span>
+                <span>👍</span>
+                </button>
+            `
+        }
+    }
+
+    const wrapper = document.querySelector('.wrapper')
+    const likeButton1 = new LikeButton()
+    wrapper.innerHTML = likeButton1.render()
+
+    const likeButton2 = new LikeButton()
+    wrapper.innerHTML += likeButton2.render()
+</script>
+
+</html>

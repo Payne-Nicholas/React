@@ -1,103 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-    <div class='wrapper'>
-    </div>
+  <body>
+    <div class="wrapper"></div>
     <div class="wrapper2"></div>
-</body>
-<script>
+    <div class="wrapper3"></div>
+  </body>
+  <script>
     class Component {
-        constructor(props = {}) {
-            this.props = props
+      constructor(props = {}) {
+        this.props = props;
+      }
+      setState(state) {
+        const oldEl = this.el;
+        this.state = state;
+        this._renderDOM();
+        if (this.onStateChange) {
+          this.onStateChange(oldEl, this.el);
         }
-        setState(state) {
-            const oldEl = this.el
-            this.state = state
-            this._renderDOM()
-            if (this.onStateChange) {
-                this.onStateChange(oldEl, this.el)
-            }
-        }
+      }
 
-        _renderDOM() {
-            this.el = this.createDOMFromString(this.render())
-            if (this.onClick) {
-                this.el.addEventListener('click', this.onClick.bind(this), false)
-            }
-            return this.el
+      _renderDOM() {
+        this.el = this.createDOMFromString(this.render());
+        if (this.onClick) {
+          this.el.addEventListener('click', this.onClick.bind(this), false);
         }
-        createDOMFromString(domString) {
-            const div = document.createElement('div')
-            div.innerHTML = domString
-            return div
-        }
+        return this.el;
+      }
+      createDOMFromString(domString) {
+        const div = document.createElement('div');
+        div.innerHTML = domString;
+        return div;
+      }
     }
 
     class LikeButton extends Component {
-        constructor(props) {
-            super(props)
-            this.state = { isLiked: false }
-        }
+      constructor(props) {
+        super(props);
+        this.state = {
+          isLiked: false
+        };
+      }
 
-        onClick() {
-            this.setState({
-                isLiked: !this.state.isLiked
-            })
-        }
-        render() {
-            return `
-                <button class='like-btn' style="background-color: ${this.props.bgColor}">
+      onClick() {
+        this.setState({
+          isLiked: !this.state.isLiked
+        });
+      }
+      render() {
+        return `
+                <button class='like-btn' style="background-color: ${
+                  this.props.bgColor
+                }">
                 <span class='like-text'>
                     ${this.state.isLiked ? '取消' : '点赞'}
                 </span>
                 <span>👍</span>
                 </button>
-            `
-        }
+            `;
+      }
     }
     const mount = (component, wrapper) => {
-        wrapper.appendChild(component._renderDOM())
-        component.onStateChange = (oldEl, newEl) => {
-            wrapper.insertBefore(newEl, oldEl)
-            wrapper.removeChild(oldEl)
-        }
-    }
-    const wrapper = document.querySelector('.wrapper')
+      wrapper.appendChild(component._renderDOM());
+      component.onStateChange = (oldEl, newEl) => {
+        wrapper.insertBefore(newEl, oldEl);
+        wrapper.removeChild(oldEl);
+      };
+    };
+    const wrapper = document.querySelector('.wrapper');
 
-
-    mount(new LikeButton({ bgColor: 'red' }), wrapper)
-
+    mount(
+      new LikeButton({
+        bgColor: 'red'
+      }),
+      wrapper
+    );
 
     class RedBlueButton extends Component {
-        constructor(props) {
-            super(props)
-            this.state = {
-                color: 'red'
-            }
-        }
+      constructor(props) {
+        super(props);
+        this.state = {
+          color: 'red'
+        };
+      }
 
-        onClick() {
-            this.setState({
-                color: 'blue'
-            })
-        }
+      onClick() {
+        this.setState({
+          color: 'blue'
+        });
+      }
 
-        render() {
-            return `
+      render() {
+        return `
                 <div style='color: ${this.state.color};'>${this.state.color}</div>
-            `
-        }
+            `;
+      }
     }
-    wrapper2 = document.querySelector('.wrapper2')
-    mount(new RedBlueButton(), wrapper2)
-    
-</script>
+    wrapper2 = document.querySelector('.wrapper2');
+    mount(new RedBlueButton(), wrapper2);
 
+    class foo extends Component {
+      constructor(props) {
+        super(props);
+        console.log(props);
+        this.state = {
+          width: props.width,
+          height: props.height,
+          background: props.background
+        };
+      }
+      onClick() {
+        this.randomColor();
+        this.randomWidthAndHeight();
+        this.setState({
+          width: this.width,
+          height: this.height,
+          background: this.bgColor
+        });
+      }
+
+      render() {
+        return `
+                <div style='width: ${this.state.width};height:${this.state.height};background:${this.state.background}'>
+                    ${this.state.width},${this.state.height},${this.state.background}
+                </div>
+            `;
+      }
+
+      randomColor() {
+        this.r = Math.floor(Math.random() * 225);
+        this.g = Math.floor(Math.random() * 225);
+        this.b = Math.floor(Math.random() * 225);
+        this.bgColor = `rgba(${this.r},${this.g},${this.b},0.8)`;
+      }
+
+      randomWidthAndHeight() {
+        this.width = Math.floor(Math.random() * 300) + 'px';
+        this.height = Math.floor(Math.random() * 300) + 'px';
+      }
+    }
+
+    let wrapper3 = document.querySelector('.wrapper3');
+    mount(
+      new foo({
+        width: '200px',
+        height: '300px',
+        background: 'orange'
+      }),
+      wrapper3
+    );
+  </script>
 </html>

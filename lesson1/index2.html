@@ -115,8 +115,8 @@
         };
       }
       onClick() {
-        this.randomColor();
-        this.randomWidthAndHeight();
+        this._randomColor();
+        this._randomWidthAndHeight();
         this.setState({
           width: this.width,
           height: this.height,
@@ -132,14 +132,14 @@
             `;
       }
 
-      randomColor() {
+      _randomColor() {
         this.r = Math.floor(Math.random() * 225);
         this.g = Math.floor(Math.random() * 225);
         this.b = Math.floor(Math.random() * 225);
         this.bgColor = `rgba(${this.r},${this.g},${this.b},0.8)`;
       }
 
-      randomWidthAndHeight() {
+      _randomWidthAndHeight() {
         this.width = Math.floor(Math.random() * 300) + 'px';
         this.height = Math.floor(Math.random() * 300) + 'px';
       }
